@@ -48,7 +48,7 @@ def getRoutes(request):
 def getStudents(request):
     notes = Student.objects.all()
     serializer = StudentSerializer(notes, many=True)
-    return Response(serializer.data)
+    return Response(serializers.data)
 
 @api_view(['GET'])
 def getStudent(request, pk):
@@ -58,9 +58,12 @@ def getStudent(request, pk):
 
 @api_view(['POST'])
 def createStudent(request):
-    serializer = StudentSerializer(data=request.data)
-    if serializer.is_valid():
-        serializer.save()
+    data = request.data   
+    note = Student.objects.create(
+        body=data['body']
+    )
+
+    serializer = StudentSerializer(note, many=False)
     return Response(serializer.data)
 
 @api_view(['PUT'])

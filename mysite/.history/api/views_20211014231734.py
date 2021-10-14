@@ -58,9 +58,12 @@ def getStudent(request, pk):
 
 @api_view(['POST'])
 def createStudent(request):
-    serializer = StudentSerializer(data=request.data)
-    if serializer.is_valid():
-        serializer.save()
+    data = request.data   
+    note = Student.objects.create(
+        #body=data['st_name','age','roll_num','standard']
+    )
+
+    serializer = StudentSerializer(note, many=False)
     return Response(serializer.data)
 
 @api_view(['PUT'])

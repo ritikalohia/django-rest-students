@@ -58,9 +58,12 @@ def getStudent(request, pk):
 
 @api_view(['POST'])
 def createStudent(request):
-    serializer = StudentSerializer(data=request.data)
-    if serializer.is_valid():
-        serializer.save()
+    data = request.data   
+    note = Student.objects.create(
+        body=data['body']
+    )
+
+    serializer = StudentSerializer(note, many=False)
     return Response(serializer.data)
 
 @api_view(['PUT'])
@@ -71,7 +74,7 @@ def updateStudent(request, pk):
     serializer = StudentSerializer(note, data=request.data)
     if serializer.is_valid():
         serializer.save()
-    return Response(serializer.data)
+    return Response(serializers.data)
 
 @api_view(['DELETE'])
 def deleteStudent(request, pk):
